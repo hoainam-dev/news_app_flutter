@@ -226,15 +226,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           delay: 1,
                           child: TextButton(
                               onPressed: () {
+                                  // await _authService
+                                  //     .signIn(
+                                  //     _emailController.text, _passwordController.text)
+                                  //     .then((value) {
+                                  //   // go to home screen
+                                  //   if (value!.getIdToken() != null) {
+                                  //     setState(() {
+                                  //       Navigator.pop(context);
+                                  //       Navigator.push(context,
+                                  //           MaterialPageRoute(builder: (context) => Root(),maintainState: false));
+                                  //     });
+                                  //   } else {
+                                  //     print("Authentication failed");
+                                  //   }
+                                  // });
                                 _authService
                                     .signIn(
                                     _emailController.text, _passwordController.text)
                                     .then((value) {
-                                  return Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Root()));
-                                });
+                                  // go to home screen
+                                  if (value!.getIdToken() != null) {
+                                    setState(() {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (BuildContext context) => new Root()));
+                                    });
+                                  } else {
+                                    print("Authentication failed");
+                                  }
+                                    });
                               },
                               child: Text(
                                 "Login",

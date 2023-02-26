@@ -27,7 +27,7 @@ class _getArticleState extends State<getArticle> {
                     physics: ClampingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return NewsTile(
-                        newsCategory: widget.newslist[index].newsCategory ?? "",
+                        newsCategory: widget.newslist,
                         author: widget.newslist[index].author ?? "",
                         imgUrl: widget.newslist[index].urlToImage ?? "",
                         desc: widget.newslist[index].description ?? "",
@@ -47,7 +47,7 @@ class _getArticleState extends State<getArticle> {
                     itemBuilder: (context, index) {
                       return
                         NewsTile(
-                          newsCategory: widget.categorielist[index].newsCategory ?? "",
+                          newsCategory: widget.categorielist,
                           author: widget.categorielist[index].author ?? "",
                           imgUrl: widget.categorielist[index].urlToImage ?? "",
                           desc: widget.categorielist[index].description ?? "",
@@ -67,7 +67,8 @@ class _getArticleState extends State<getArticle> {
 
 
 class NewsTile extends StatelessWidget {
-  final String newsCategory, author, imgUrl, title, desc, content, posturl;
+  final String author, imgUrl, title, desc, content, posturl;
+  final newsCategory;
   final DateTime publshedAt;
   NewsTile({required this.newsCategory,
     required this.author,
@@ -128,7 +129,7 @@ class NewsTile extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 25),
+                          SizedBox(height: 15),
                           Row(
                             children: [
                               Text(urlNews.length==2?urlNews[0]+'.'+urlNews[1]:urlNews[1]+'.'+urlNews[2],
@@ -138,19 +139,18 @@ class NewsTile extends StatelessWidget {
                                 height: 7,
                                 width: 1,
                                 color: Color(0xffdedede),
-                              ),
-                              Text("")
+                              )
                             ],
                           ),
                         ],
                       )),
                   SizedBox(
-                    width: 5,
+                    width: 4,
                   ),
                   Image.network(
                     imgUrl,
-                    height: 100,
-                    width: 150,
+                    height: 90,
+                    width: 145,
                     fit: BoxFit.cover,
                   )
                 ],

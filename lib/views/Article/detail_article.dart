@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DetailArticle extends StatelessWidget {
-  TextEditingController searchController = new TextEditingController();
-  var newslist;
+import '../../helper/widgets.dart';
 
-  final String newsCategory, author, imgUrl, title, desc, content, posturl;
+class DetailArticle extends StatefulWidget {
+  final String author, imgUrl, title, desc, content, posturl;
+  final newsCategory;
   final DateTime publshedAt;
   DetailArticle({required this.newsCategory,
     required this.author,
@@ -18,6 +18,13 @@ class DetailArticle extends StatelessWidget {
     required this.content,
     required this.posturl});
 
+  @override
+  State<DetailArticle> createState() => _DetailArticleState();
+}
+
+class _DetailArticleState extends State<DetailArticle> {
+  TextEditingController searchController = new TextEditingController();
+
   String dateTimeFormat(DateTime publshedAt) {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('EEEE, MMM d, yyyy').format(now);
@@ -26,7 +33,7 @@ class DetailArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var urlNews = posturl.split('/')[2].split('.');
+    var urlNews = widget.posturl.split('/')[2].split('.');
     return Scaffold(
         appBar: AppBar(
           title: Container(
@@ -62,7 +69,7 @@ class DetailArticle extends StatelessWidget {
                     padding: EdgeInsets.only(left: 15, top: 20, right: 15),
                     child: Column(children: <Widget>[
                       Text(
-                        "${title}",
+                        "${widget.title}",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -70,7 +77,7 @@ class DetailArticle extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "${dateTimeFormat(publshedAt)}",
+                            "${dateTimeFormat(widget.publshedAt)}",
                             style: TextStyle(color: Color(0xff929292), fontSize: 12),
                           ),
                           SizedBox(width: 20),
@@ -79,40 +86,40 @@ class DetailArticle extends StatelessWidget {
                           InkWell(
                               child: new Text(" Xem trang gốc",
                                   style: TextStyle(fontSize: 12, color: Colors.blue, decoration : TextDecoration.underline)),
-                              onTap: () => {Navigator.push(context, MaterialPageRoute(builder:(context)=> ArticleView(postUrl: posturl)))}
+                              onTap: () => {Navigator.push(context, MaterialPageRoute(builder:(context)=> ArticleView(postUrl: widget.posturl)))}
                           ),
                         ],
                       ),
                       SizedBox(height: 20),
                       Row(
                         children: [
-                          Row(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(author, style: TextStyle(fontSize: 15)),
+                              Text(widget.author, style: TextStyle(fontSize: 15)),
+                              // SizedBox(width: 5),
+                              // Text(" - ", style: TextStyle(fontSize: 15)),
                               SizedBox(width: 5),
-                              Text(" - ", style: TextStyle(fontSize: 15)),
-                              SizedBox(width: 5),
-                              Text("${dateTimeFormat(publshedAt)}",style: TextStyle(fontSize: 15)),
+                              Text("${dateTimeFormat(widget.publshedAt)}",style: TextStyle(fontSize: 15)),
                             ],
                           )
                         ],
                       ),
                       SizedBox(height: 20),
-                      Text(desc, style: TextStyle(fontSize: 16), textAlign: TextAlign.justify,),
+                      Text(widget.desc, style: TextStyle(fontSize: 16), textAlign: TextAlign.justify,),
                       SizedBox(height: 20),
-                      Image.network(imgUrl),
+                      Image.network(widget.imgUrl),
                       SizedBox(height: 20),
-                      Text(content, style: TextStyle(fontSize: 16), textAlign: TextAlign.justify,),
+                      Text(widget.content, style: TextStyle(fontSize: 16), textAlign: TextAlign.justify,),
                       SizedBox(height: 10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Author: "+author, style: TextStyle(fontSize: 16)),
+                          Text("Author: "+widget.author, style: TextStyle(fontSize: 16)),
                           SizedBox(height: 10),
                           Text("Source Link:", style: TextStyle(fontSize: 16)),
-                          Text(posturl, style: TextStyle(fontSize: 16)),
+                          Text(widget.posturl, style: TextStyle(fontSize: 16)),
                           SizedBox(height: 10),
                           Text("Soure: ${urlNews.length==2?urlNews[0]+'.'+urlNews[1]:urlNews[1]+'.'+urlNews[2]}",
                               style: TextStyle(fontSize: 13, color: Color(0xff7e7e7e))),
@@ -138,10 +145,42 @@ class DetailArticle extends StatelessWidget {
                           ),
                           const Divider(color: Colors.grey),
                           Text("good suggestion", textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 15, color: Color(0xff7e7e7e)))
+                            style: TextStyle(fontSize: 15, color: Color(0xff7e7e7e))),
                         ],
                       ),
+                      getSuggestArticle(),
                     ])))));
         // bottomNavigationBar: BotAppBar(context));
   }
+
+  Widget getSuggestArticle() {
+    return widget.newsCategory.length==0?Container():
+    Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: ListView.builder(
+                  itemCount: widget.newsCategory.length>=8?8:widget.newsCategory.length,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return
+                      NewsTile(
+                        newsCategory: widget.newsCategory,
+                        author: widget.newsCategory[index].author ?? "",
+                        imgUrl: widget.newsCategory[index].urlToImage ?? "",
+                        desc: widget.newsCategory[index].description ?? "",
+                        title: widget.newsCategory[index].title ?? "",
+                        content: widget.newsCategory[index].content ?? "",
+                        publshedAt: widget.newsCategory[index].publshedAt ?? "",
+                        posturl: widget.newsCategory[index].articleUrl ?? "",
+                      );
+                  }),
+            ),
+          ],
+        )
+    );
 }
+}
+

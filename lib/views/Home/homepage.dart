@@ -93,13 +93,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottom: AppBar(
+        elevation: 0.0,
+        bottomOpacity: 0.0,
         title: SingleChildScrollView(
             child: Container(
                 child: Row(children: <Widget>[
           /// Categories
           Container(
             height: 30,
-            width: 330,
+            width: 340,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,

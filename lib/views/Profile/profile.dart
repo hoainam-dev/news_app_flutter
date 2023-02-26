@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'Profile_Component/feedbacks.dart';
+import 'package:do_an_cuoi_ki/views/Profile/Profile_Component/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -64,29 +65,29 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           children: [
                             Icon(
                               Icons.group,
-                              size: 30,
+                              size: 25,
                               color: Colors.deepOrange,
                             ),
                             Text("Theo dõi")
                           ],
                         ),
-                        SizedBox(width: 30),
+                        SizedBox(width: 40),
                         Column(
                           children: [
                             Icon(
                               Icons.doorbell,
-                              size: 30,
+                              size: 25,
                               color: Colors.purple,
                             ),
                             Text("Thông báo")
                           ],
                         ),
-                        SizedBox(width: 30),
+                        SizedBox(width: 40),
                         Column(
                           children: [
                             Icon(
                               Icons.star,
-                              size: 30,
+                              size: 25,
                               color: Colors.lightBlue,
                             ),
                             Text("Ban đêm")
@@ -115,15 +116,16 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     Column(
                       children: [
                         ProfileMenuWidget(
-                          onPress: () => {},
-                          title: "Phản hồi",
-                          icon: Icons.question_answer,
+                          onPress: () => {Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Feedbacks()))
+                          },
+                          title: "Tôi muốn phản hồi",
+                          icon: Icons.quiz,
                         ),
                         ProfileMenuWidget(
                           onPress: () => {
-                            FirebaseAuth.instance.signOut(),
-                            // Navigator.push(context,
-                            // MaterialPageRoute(builder: (context) => LoginScreen()))
+                            Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Setting()))
                           },
                           title: "Cài đặt",
                           icon: Icons.settings,
@@ -201,9 +203,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text("Cấp 2",
-                                style: TextStyle(color: Colors.black)),
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400)),
                             Text("Tiến Sĩ Khoa Học >",
-                                style: TextStyle(color: Colors.black))
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 13))
                           ],
                         ),
                       ),
@@ -219,9 +221,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("0cs", style: TextStyle(color: Colors.green)),
+                            Text("0cs", style: TextStyle(color: Colors.green, fontWeight: FontWeight.w400)),
                             Text("Điểm tín dụng >",
-                                style: TextStyle(color: Colors.black87))
+                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 13))
                           ],
                         ),
                       ),
@@ -273,13 +275,12 @@ class ProfileMenuWidget extends StatelessWidget {
           child: Icon(
             icon,
             color: Iconcolor,
+            size: 25,
           ),
         ),
         title: Text(this.title,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.apply(color: textColor)));
+            style: TextStyle(fontSize: 15)
+        ));
   }
 }
 

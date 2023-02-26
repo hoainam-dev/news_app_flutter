@@ -17,6 +17,11 @@ class AuthService {
   signOut() async {
     return await _auth.signOut();
   }
+  // //SignOut
+  // deleteUser() async {
+  //
+  //   return await _auth.de;
+  // }
 
   //Register
   Future<User?> createUser(String name, String email, String password) async {

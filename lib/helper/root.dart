@@ -13,6 +13,7 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
+  final User? user = FirebaseAuth.instance.currentUser;
   int activeTab = 0;
 
   @override
@@ -79,77 +80,79 @@ class _RootState extends State<Root> {
         //   ),
         //   ),
         // ),
-        ProfileWidget(infor: Container(
-            margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () => {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()))
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white)),
-                  child: Column(
-                    children: [
-                      Text("Đăng nhập", style: TextStyle(color: Colors.black))
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )),
-        // StreamBuilder<User?>(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (context, snapshot){
-        //     if(snapshot.hasData){
-        //       return ProfileWidget(infor: Container(
-        //           margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-        //           child:
-        //           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //             Column(
-        //               children: [
-        //                 SizedBox(
-        //                   width: 60,
-        //                   height: 60,
-        //                   child: CircleAvatar(
-        //                     radius: 60,
-        //                     backgroundImage:
-        //                     AssetImage("assets/images/background.jpg"),
-        //                   ),
-        //                 ),
-        //                 const SizedBox(
-        //                   height: 10,
-        //                 ),
-        //               ],
-        //             )
-        //           ])));
-        //     }else{
-        //       return ProfileWidget(infor: Container(
-        //         margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-        //         child: Row(
-        //           mainAxisAlignment: MainAxisAlignment.center,
-        //           children: [
-        //             ElevatedButton(
-        //               onPressed: () => {
-        //                 Navigator.push(context,
-        //                     MaterialPageRoute(builder: (context) => LoginScreen()))
-        //               },
-        //               style: ButtonStyle(
-        //                   backgroundColor: MaterialStateProperty.all(Colors.white)),
-        //               child: Column(
-        //                 children: [
-        //                   Text("Đăng nhập", style: TextStyle(color: Colors.black))
-        //                 ],
-        //               ),
-        //             )
-        //           ],
-        //         ),
-        //       ));
-        //     }
-        //   },
-        // ),
+        // ProfileWidget(infor: Container(
+        //     margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.center,
+        //       children: [
+        //         ElevatedButton(
+        //           onPressed: () => {
+        //             Navigator.push(context,
+        //                 MaterialPageRoute(builder: (context) => LoginScreen()))
+        //           },
+        //           style: ButtonStyle(
+        //               backgroundColor: MaterialStateProperty.all(Colors.white)),
+        //           child: Column(
+        //             children: [
+        //               Text("Đăng nhập", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400))
+        //             ],
+        //           ),
+        //         )
+        //       ],
+        //     ),
+        //   )),
+        StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              return ProfileWidget(infor: Container(
+                  margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                  child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundImage:
+                            AssetImage("assets/images/background.jpg"),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text("${user!.email}", ),
+                        // Text("${user!.displayName}", ),
+                      ],
+                    )
+                  ])));
+            }else{
+              return ProfileWidget(infor: Container(
+                margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => LoginScreen()))
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Colors.white)),
+                      child: Column(
+                        children: [
+                          Text("Đăng nhập", style: TextStyle(color: Colors.black))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ));
+            }
+          },
+        ),
       ],
     );
   }
