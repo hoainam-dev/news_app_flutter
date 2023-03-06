@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:do_an_cuoi_ki/views/Profile/profile.dart';
 import 'package:do_an_cuoi_ki/views/Home/homepage.dart';
-
-import '../views/Authentication/Login_Screen.dart';
 
 class Root extends StatefulWidget {
   const Root({Key? key}) : super(key: key);
@@ -13,7 +10,6 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  final User? user = FirebaseAuth.instance.currentUser;
   int activeTab = 0;
 
   @override
@@ -72,87 +68,10 @@ class _RootState extends State<Root> {
     return IndexedStack(
       index: activeTab,
       children: [
-        HomePage(), // Center(
-        //   child: Text("Home", style: TextStyle(
-        //       fontSize: 20,
-        //       fontWeight: FontWeight.bold,
-        //       color: Colors.white
-        //   ),
-        //   ),
-        // ),
-        // ProfileWidget(infor: Container(
-        //     margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         ElevatedButton(
-        //           onPressed: () => {
-        //             Navigator.push(context,
-        //                 MaterialPageRoute(builder: (context) => LoginScreen()))
-        //           },
-        //           style: ButtonStyle(
-        //               backgroundColor: MaterialStateProperty.all(Colors.white)),
-        //           child: Column(
-        //             children: [
-        //               Text("Đăng nhập", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400))
-        //             ],
-        //           ),
-        //         )
-        //       ],
-        //     ),
-        //   )),
-        StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot){
-            if(snapshot.hasData){
-              return ProfileWidget(infor: Container(
-                  margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                  child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundImage:
-                            AssetImage("assets/images/background.jpg"),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text("${user!.email}", ),
-                        // Text("${user!.displayName}", ),
-                      ],
-                    )
-                  ])));
-            }else{
-              return ProfileWidget(infor: Container(
-                margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()))
-                      },
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white)),
-                      child: Column(
-                        children: [
-                          Text("Đăng nhập", style: TextStyle(color: Colors.black))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ));
-            }
-          },
-        ),
+        //index 0: return home page
+        HomePage(),
+        //index 1: return profile page
+        ProfileWidget()
       ],
     );
   }

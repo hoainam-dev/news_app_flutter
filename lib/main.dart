@@ -1,9 +1,7 @@
-import 'package:do_an_cuoi_ki/service/category_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'helper/root.dart';
 
-//https://flutterawesome.com/tag/login-screen/
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,9 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-      // Test()
-      Root()
+      home: Root()
     );
   }
 }

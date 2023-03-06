@@ -1,26 +1,146 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import '../Authentication/Login_Screen.dart';
 import '../Category/create_category.dart';
-
 import 'Profile_Component/feedbacks.dart';
 import 'package:do_an_cuoi_ki/views/Profile/Profile_Component/setting.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatefulWidget {
-  const ProfileWidget({Key? key, required this.infor}) : super(key: key);
-  final Widget infor;
 
   @override
   State<ProfileWidget> createState() => _ProfileWidgetState();
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-  @override
-  void initState(){
-    // TODO: implement initState
-    super.initState();
-    // getUsers();
-  }
+  final User? user = FirebaseAuth.instance.currentUser;
 
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot){
+        if(snapshot.hasData){
+          return getBody(inforWidget: Container(
+            margin: EdgeInsets.fromLTRB(0, 50, 0, 0),
+            child:
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Column(
+                children: [
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage:
+                      AssetImage("assets/images/background.jpg"),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text("${user?.email??""}", ),
+                  // Text("${user!.displayName}", ),
+                ],
+              )
+            ]),),
+            createWidget: ProfileMenuWidget(
+              icon: Icons.create,
+              title: 'My Article',
+              onPress: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) =>
+                      CreateCategories()));
+            },),
+            levelWidget: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () => {print("aaa")},
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(Colors.white)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("Cấp 2",
+                            style: TextStyle(color: Colors.black,
+                                fontWeight: FontWeight.w400)),
+                        Text("Tiến Sĩ Khoa Học >",
+                            style: TextStyle(color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13))
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () => {print("aaa")},
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(Colors.white)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("0cs", style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w400)),
+                        Text("Điểm tín dụng >",
+                            style: TextStyle(color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13))
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }else{
+          return getBody(inforWidget: Container(
+            margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()))
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white)),
+                  child: Column(
+                    children: [
+                      Text("Đăng nhập", style: TextStyle(color: Colors.black))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+              createWidget: Container(),
+              levelWidget: Container(),
+          );
+        }
+      },
+    );
+  }
+}
+
+class getBody extends StatefulWidget {
+  const getBody({Key? key, required this.inforWidget, required this.createWidget, required this.levelWidget}) : super(key: key);
+  final Widget inforWidget,createWidget, levelWidget;
+
+  @override
+  State<getBody> createState() => _getBodyState();
+}
+
+class _getBodyState extends State<getBody> {
   @override
   Widget build(BuildContext context) {
     var titleInforText = [
@@ -40,214 +160,174 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     ];
     return Scaffold(
         body: SingleChildScrollView(
-      child: Container(
-          child: Stack(
-            children: [
-              Container(
-                child: Image.asset("assets/images/background.jpg"),
-              ),
-              widget.infor,
-              Container(
-                padding: EdgeInsets.only(top: 50),
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.elliptical(260, 30),
-                      topRight: Radius.elliptical(260, 30)),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Icon(
-                              Icons.group,
-                              size: 25,
-                              color: Colors.deepOrange,
-                            ),
-                            Text("Theo dõi")
-                          ],
-                        ),
-                        SizedBox(width: 40),
-                        Column(
-                          children: [
-                            Icon(
-                              Icons.doorbell,
-                              size: 25,
-                              color: Colors.purple,
-                            ),
-                            Text("Thông báo")
-                          ],
-                        ),
-                        SizedBox(width: 40),
-                        Column(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 25,
-                              color: Colors.lightBlue,
-                            ),
-                            Text("Ban đêm")
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Divider(color: Colors.grey),
-                    Column(
-                      children: [
-                        ProfileMenuWidget(
-                          onPress: () => {},
-                          title: "Lưu",
-                          icon: Icons.save,
-                          Iconcolor: Colors.red,
-                        ),
-                        ProfileMenuWidget(
-                          onPress: () => {},
-                          title: "Lịch sử",
-                          icon: Icons.query_builder_sharp,
-                          Iconcolor: Colors.yellow,
-                        ),
-                      ],
-                    ),
-                    const Divider(color: Colors.grey),
-                    Column(
-                      children: [
-                        ProfileMenuWidget(
-                          onPress: () => {Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Feedbacks()))
-                          },
-                          title: "Tôi muốn phản hồi",
-                          icon: Icons.quiz,
-                        ),
-                        ProfileMenuWidget(
-                          onPress: () => {
-                            Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Setting()))
-                          },
-                          title: "Cài đặt",
-                          icon: Icons.settings,
-                          textColor: Colors.red,
-                          endIcon: false,
-                        ),
-                        ProfileMenuWidget(
-                          onPress: () => {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => CreateCategories()))
-                          },
-                          title: "Create category",
-                          icon: Icons.create,
-                          textColor: Colors.red,
-                          endIcon: false,
-                        ),
-                      ],
-                    ),
-                    const Divider(color: Colors.grey),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      height: 370,
-                      child: Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              titleInfoText(titleInforText[0]+"     "),
-                              SizedBox(height: 5),
-                              infoText(inforText[0]),
-                              SizedBox(height: 5),
-                              infoText(inforText[1]),
-                              SizedBox(height: 5),
-                              infoText(inforText[2]),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              titleInfoText(titleInforText[1]),
-                              SizedBox(height: 5),
-                              infoText(inforText[3]),
-                              SizedBox(height: 5),
-                              infoText(inforText[4]),
-                              SizedBox(height: 5),
-                              infoText(inforText[5]),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              titleInfoText(titleInforText[2]),
-                              SizedBox(height: 5),
-                              infoText(inforText[6]),
-                              SizedBox(height: 5),
-                              infoText(inforText[7]),
-                              SizedBox(height: 5),
-                              infoText(inforText[8]),
-                              SizedBox(height: 5),
-                              infoText(inforText[9]),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 175, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 60,
-                      child: ElevatedButton(
-                        onPressed: () => {print("aaa")},
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("Cấp 2",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400)),
-                            Text("Tiến Sĩ Khoa Học >",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 13))
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 60,
-                      child: ElevatedButton(
-                        onPressed: () => {print("aaa")},
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("0cs", style: TextStyle(color: Colors.green, fontWeight: FontWeight.w400)),
-                            Text("Điểm tín dụng >",
-                                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 13))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )),
-    ));
-  }
+          child: Container(
+              child: Stack(
+                children: [
+                  Container(
+                    child: Image.asset("assets/images/background.jpg"),
+                  ),
+                  widget.inforWidget,
 
+                  Container(
+                    padding: EdgeInsets.only(top: 30),
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
+                    margin: EdgeInsets.fromLTRB(0, 200, 0, 0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.elliptical(260, 30),
+                          topRight: Radius.elliptical(260, 30)),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.group,
+                                  size: 25,
+                                  color: Colors.deepOrange,
+                                ),
+                                Text("Theo dõi")
+                              ],
+                            ),
+                            SizedBox(width: 40),
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.doorbell,
+                                  size: 25,
+                                  color: Colors.purple,
+                                ),
+                                Text("Thông báo")
+                              ],
+                            ),
+                            SizedBox(width: 40),
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  size: 25,
+                                  color: Colors.lightBlue,
+                                ),
+                                Text("Ban đêm")
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Divider(color: Colors.grey),
+                        Column(
+                          children: [
+                            ProfileMenuWidget(
+                              onPress: () => {},
+                              title: "Lưu",
+                              icon: Icons.save,
+                              Iconcolor: Colors.red,
+                            ),
+                            ProfileMenuWidget(
+                              onPress: () => {},
+                              title: "Lịch sử",
+                              icon: Icons.query_builder_sharp,
+                              Iconcolor: Colors.yellow,
+                            ),
+                          ],
+                        ),
+                        const Divider(color: Colors.grey),
+                        Column(
+                          children: [
+                            ProfileMenuWidget(
+                              onPress: () =>
+                              {Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Feedbacks()))
+                              },
+                              title: "Tôi muốn phản hồi",
+                              icon: Icons.quiz,
+                            ),
+                            ProfileMenuWidget(
+                              onPress: () =>
+                              {
+                                Navigator.push(context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Setting()))
+                              },
+                              title: "Cài đặt",
+                              icon: Icons.settings,
+                              textColor: Colors.red,
+                              endIcon: false,
+                            ),
+                            widget.createWidget,
+                          ],
+                        ),
+                        const Divider(color: Colors.grey),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          height: 370,
+                          child: Column(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  titleInfoText(titleInforText[0] + "     "),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[0]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[1]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[2]),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  titleInfoText(titleInforText[1]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[3]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[4]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[5]),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  titleInfoText(titleInforText[2]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[6]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[7]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[8]),
+                                  SizedBox(height: 5),
+                                  infoText(inforText[9]),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 165, 0, 0),
+                    child: widget.levelWidget
+                  ),
+                ],
+              )),
+        ));
+  }
   Widget infoText(String text){
     return Text(text,style: TextStyle(color: Colors.grey));
   }

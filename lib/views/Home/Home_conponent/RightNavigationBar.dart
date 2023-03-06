@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import '../../../models/categorie_model.dart';
 
 class RightNavigationBar extends StatefulWidget {
+  final category, activeTab;
+  RightNavigationBar({required this.category, this.activeTab});
   @override
   State<RightNavigationBar> createState() => _RightNavigationBarState();
 }
 
 class _RightNavigationBarState extends State<RightNavigationBar> {
   bool _isPress = false;
-  List<Category> categories = <Category>[];
 
   //Init
   @override
@@ -55,10 +56,14 @@ class _RightNavigationBarState extends State<RightNavigationBar> {
                             _isPress = !_isPress;
                           })
                         },
-                        child: Text(_isPress ? "Hoàn thành" : "Chỉnh sửa"),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white)),
+                        child: Text(_isPress ? "Hoàn thành" : "Chỉnh sửa", style: TextStyle(color: Colors.black),),
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                  )
+                              )
+                          )
                       )
                     ],
                   ),
@@ -69,47 +74,35 @@ class _RightNavigationBarState extends State<RightNavigationBar> {
                   Container(
                     margin: EdgeInsets.only(top: 16),
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    height: 170,
                     child: GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 130,
-                                childAspectRatio: 4,
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 5),
-                        itemCount: categories.length,
+                                maxCrossAxisExtent: 120,
+                                childAspectRatio: 3,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
+                        itemCount: widget.category.length,
                         itemBuilder: (BuildContext ctx, index) {
-                          return TextButton(
+                          return ElevatedButton(
                               onPressed: () {},
                               style: TextButton.styleFrom(
-                                // background
-                                primary: Colors.black, // foreground
-                                side: BorderSide(width: 1, color: Colors.grey),
+                                backgroundColor: Color(0xfff1f1f1),
+                                primary: index==0?Color(0xff7e7e7e):Colors.black,
                               ),
                               child: Text(
-                                "${categories[index].categorieName}",
-                                style: TextStyle(fontSize: 12),
+                                "${widget.category[index].categorieName}",
+                                style: TextStyle(fontSize: 13, color: widget.activeTab==index?Color(0xffd43c3b):null),
                               ));
-                          //   Container(
-                          //   alignment: Alignment.center,
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(10)),
-                          //   child: Text("${categories[index].categorieName}"),
-                          // );
                         }),
-                  )
+                  ),
+                  Text("Kênh đề xuất"),
+                  Text(
+                    "Nhấn để thêm vào Kênh của tôi",
+                    style: TextStyle(color: Color(0xff7e7e7e)),
+                  ),
                 ],
               )),
         ));
-  }
-
-  Widget getListCategory() {
-    return ListView.builder(
-        itemCount: categories.length,
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        itemBuilder: (context, index) {
-          return Text("${categories[index].categorieName}");
-        });
   }
 }

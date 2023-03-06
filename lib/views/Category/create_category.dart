@@ -84,7 +84,7 @@ class _CreateCategoryState extends State<CreateCategories> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kindacode.com'),
+        title: const Text('Create New Category'),
       ),
       // Using StreamBuilder to display all products from Firestore in real-time
       body: StreamBuilder(

@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     getNews();
+    getCategory();
   }
 
 
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                   /// Categories
                   Container(
                     height: 30,
-                    width: 340,
+                    width: 330,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: categoryList.length,
@@ -154,17 +155,16 @@ class _HomePageState extends State<HomePage> {
                         }),
                   ),
                   Container(
-                      width: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            Icons.menu,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ))
+                    width: 30,
+                    child: IconButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RightNavigationBar(category: categoryList, activeTab: activeTab,)));
+                    },
+                      icon: Icon(
+                        Icons.menu,
+                        size: 25,
+                        color: Colors.black,
+                      ),),
+                  ),
                 ]))),
         backgroundColor: Colors.white,
       ),
