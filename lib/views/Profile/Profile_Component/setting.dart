@@ -78,7 +78,7 @@ class _SettingState extends State<Setting> {
         bottomOpacity: 0.0,
         elevation: 0.0,
         title: Container(
-          margin: EdgeInsets.fromLTRB(100, 10, 0, 0),
+          margin: EdgeInsets.fromLTRB(85, 10, 0, 0),
           child:Text("Cài đặt", style: TextStyle(color: Colors.black),),
         ),
       ),

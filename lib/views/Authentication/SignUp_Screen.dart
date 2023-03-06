@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../Core/Animation/Fade_Animation.dart';
 import '../../Core/Colors/Hex_Color.dart';
-import '../../service/auth.dart';
+import '../../service/auth_service.dart';
 import 'Login_Screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

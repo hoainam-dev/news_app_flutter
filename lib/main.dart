@@ -1,3 +1,4 @@
+import 'package:do_an_cuoi_ki/service/category_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'helper/root.dart';
@@ -6,7 +7,6 @@ import 'helper/root.dart';
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   runApp(const MyApp());
 }
 
@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Root()
+      home:
+      // Test()
+      Root()
     );
   }
 }

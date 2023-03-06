@@ -1,8 +1,21 @@
-class UserModel{
+class Users{
   String? email;
-  String? password;
   String? name;
   String? phone;
+  String? userPhotoURL;
 
-  UserModel({this.email, this.password, this.name, this.phone});
+  Users({this.email, this.name, this.phone});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'name': name,
+      'phone': phone,
+    };
+  }
+
+  Users.fromMap(Map<String, dynamic> userMap)
+      : email = userMap["email"],
+        name = userMap["name"],
+        phone = userMap["phone"];
 }

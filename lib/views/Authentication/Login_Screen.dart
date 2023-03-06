@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../Core/Animation/Fade_Animation.dart';
 import '../../Core/Colors/Hex_Color.dart';
-import '../../service/auth.dart';
+import '../../service/auth_service.dart';
 import '../Authentication/Forgot_Password_Screen.dart';
 import '../Home/homepage.dart';
 import '../../helper/root.dart';
@@ -226,21 +226,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           delay: 1,
                           child: TextButton(
                               onPressed: () {
-                                  // await _authService
-                                  //     .signIn(
-                                  //     _emailController.text, _passwordController.text)
-                                  //     .then((value) {
-                                  //   // go to home screen
-                                  //   if (value!.getIdToken() != null) {
-                                  //     setState(() {
-                                  //       Navigator.pop(context);
-                                  //       Navigator.push(context,
-                                  //           MaterialPageRoute(builder: (context) => Root(),maintainState: false));
-                                  //     });
-                                  //   } else {
-                                  //     print("Authentication failed");
-                                  //   }
-                                  // });
                                 _authService
                                     .signIn(
                                     _emailController.text, _passwordController.text)
@@ -248,10 +233,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // go to home screen
                                   if (value!.getIdToken() != null) {
                                     setState(() {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (BuildContext context) => new Root()));
+                                      Navigator.pop(context);
+                                      // Navigator.pushReplacement(
+                                      //     context,
+                                      //     new MaterialPageRoute(
+                                      //         builder: (BuildContext context) => new Root()));
                                     });
                                   } else {
                                     print("Authentication failed");

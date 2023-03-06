@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:do_an_cuoi_ki/service/category_service.dart';
 import 'package:flutter/material.dart';
-import 'package:do_an_cuoi_ki/helper/data.dart';
-import 'package:do_an_cuoi_ki/helper/widgets.dart';
-import 'package:do_an_cuoi_ki/models/categorie_model.dart';
-import '../../helper/news.dart';
+import '../../helper/widgets.dart';
+import '../../service/article_service.dart';
+import 'Home_conponent/RightNavigationBar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,65 +12,83 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late bool _loading;
-  var newslist;//List News
-  var categorielist;//List Categorie News
+  var newslist; //List News
+  var newsCategorielist; //List Categorie News
+  var categoryList;
   TextEditingController searchController = new TextEditingController();
   String? category;
   int activeTab = 0;
 
-  List<CategorieModel> categories = <CategorieModel>[];//Categorie Model
+  final CollectionReference _category = FirebaseFirestore.instance.collection('category');
+
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   //Get All News
   void getNews() async {
-    News news = News();
-    await news.getNews();
-    newslist = news.news;
+    ArticleService articleService = ArticleService();
+    await articleService.getNews();
+    newslist = articleService.news;
+    print("news: ${newslist}");
     setState(() {
       _loading = false;
     });
+    print("this is home!");
   }
 
   //Get Categorie News
   void getCategorieNews() async {
-    NewsForCategorie categorieNews = NewsForCategorie();
-    if(activeTab==0){
-      categorielist = [];
-    }else{
-      await categorieNews.getNewsForCategory(category!.toLowerCase());
-      categorielist = categorieNews.news;
+    ArticleService articleService = ArticleService();
+    if (activeTab == 0) {
+      newsCategorielist = [];
+    } else {
+      await articleService.getNewsForCategory(category!.toLowerCase());
+      newsCategorielist = articleService.categoryNews;
       setState(() {
         _loading = false;
       });
     }
+    print("current category: ${category}");
+  }
+
+  void getCategory() async{
+    CategoryService categoryService = CategoryService();
+    await categoryService.getCategories();
+    categoryList = categoryService.categories;
   }
 
   //Init
   @override
-  void initState(){
+  void initState() {
     _loading = true;
     // TODO: implement initState
     super.initState();
-    categories = getCategories();
     getNews();
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: TopAppBar(),
         body: SafeArea(
-            child: _loading
-                ? Center(
-              child: CircularProgressIndicator(),
-            )
-                : getArticle(activeTab: activeTab, newslist: newslist, categorielist: categorielist)
-          ),
-    );
+          child: _loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              :
+          // OutlinedButton(onPressed: ()=>{
+          // }, child: Text("${category}"))
+              getArticle(
+                  activeTab: activeTab,
+                  newslist: newslist,
+                  newscategorielist: newsCategorielist),
+        ));
   }
 
   //App bar
   PreferredSizeWidget TopAppBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Container(
         height: 40,
         decoration: BoxDecoration(
@@ -98,55 +117,55 @@ class _HomePageState extends State<HomePage> {
         title: SingleChildScrollView(
             child: Container(
                 child: Row(children: <Widget>[
-          /// Categories
-          Container(
-            height: 30,
-            width: 340,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      onTap: (){
-                        setState((){
-                          category = categories[index].categorieId ?? "";
-                          activeTab = index;
-                        });
-                        getCategorieNews();
-                      },
-                      child: Container(
-                          margin: EdgeInsets.only(top: 5, right: 14),
-                          child: Stack(children: <Widget>[
-                            Column(
-                              children: [
-                                Text(
-                                  '${categories[index].categorieName}',
-                                  style: TextStyle(fontSize: 16, color: activeTab==index?Color(0xffd43c3b):Colors.black),
-                                ),
-                                SizedBox(height: 3),
-                                activeTab==index?Container(
-                                  height: 2,
-                                  width: 40,
-                                  color: Color(0xffd43c3b),
-                                ):Container()
-                              ],
-                            )
-                          ])));
-                }),
-          ),
-          Container(
-              width: 30,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.menu,
-                    size: 25,
-                    color: Colors.black,
+                  /// Categories
+                  Container(
+                    height: 30,
+                    width: 340,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: categoryList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              onTap: (){
+                                setState((){
+                                  category = categoryList[index].categorieSlug ?? "";
+                                  activeTab = index;
+                                });
+                                getCategorieNews();
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.only(top: 5, right: 14),
+                                  child: Stack(children: <Widget>[
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${categoryList[index].categorieName}',
+                                          style: TextStyle(fontSize: 16, color: activeTab==index?Color(0xffd43c3b):Colors.black),
+                                        ),
+                                        SizedBox(height: 3),
+                                        activeTab==index?Container(
+                                          height: 2,
+                                          width: 40,
+                                          color: Color(0xffd43c3b),
+                                        ):Container()
+                                      ],
+                                    )
+                                  ])));
+                        }),
                   ),
-                ],
-              ))
-        ]))),
+                  Container(
+                      width: 30,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.menu,
+                            size: 25,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ))
+                ]))),
         backgroundColor: Colors.white,
       ),
       backgroundColor: Color(0xffd43c3b),

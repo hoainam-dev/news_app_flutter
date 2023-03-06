@@ -16,7 +16,7 @@ class Feedbacks extends StatelessWidget {
           bottomOpacity: 0.0,
           elevation: 0.0,
           title: Container(
-            margin: EdgeInsets.fromLTRB(50, 0, 0, 0),
+            margin: EdgeInsets.fromLTRB(40, 0, 0, 0),
             child:Text("Trợ giúp & Phản hồi", style: TextStyle(color: Colors.black),),
           ),
         ),

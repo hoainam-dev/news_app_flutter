@@ -3,8 +3,8 @@ import 'package:do_an_cuoi_ki/views/Article/detail_article.dart';
 
 //Get Article
 class getArticle extends StatefulWidget {
-  const getArticle({Key? key, this.activeTab, this.newslist, this.categorielist}) : super(key: key);
-  final activeTab, newslist, categorielist;
+  const getArticle({Key? key, this.activeTab, this.newslist, this.newscategorielist}) : super(key: key);
+  final activeTab, newslist, newscategorielist;
 
   @override
   State<getArticle> createState() => _getArticleState();
@@ -41,20 +41,20 @@ class _getArticleState extends State<getArticle> {
                   : Container(
                 margin: EdgeInsets.only(top: 16),
                 child: ListView.builder(
-                    itemCount: widget.categorielist.length,
+                    itemCount: widget.newscategorielist.length,
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return
                         NewsTile(
-                          newsCategory: widget.categorielist,
-                          author: widget.categorielist[index].author ?? "",
-                          imgUrl: widget.categorielist[index].urlToImage ?? "",
-                          desc: widget.categorielist[index].description ?? "",
-                          title: widget.categorielist[index].title ?? "",
-                          content: widget.categorielist[index].content ?? "",
-                          publshedAt: widget.categorielist[index].publshedAt ?? "",
-                          posturl: widget.categorielist[index].articleUrl ?? "",
+                          newsCategory: widget.newscategorielist,
+                          author: widget.newscategorielist[index].author ?? "",
+                          imgUrl: widget.newscategorielist[index].urlToImage ?? "",
+                          desc: widget.newscategorielist[index].description ?? "",
+                          title: widget.newscategorielist[index].title ?? "",
+                          content: widget.newscategorielist[index].content ?? "",
+                          publshedAt: widget.newscategorielist[index].publshedAt ?? "",
+                          posturl: widget.newscategorielist[index].articleUrl ?? "",
                         );
                     }),
               ),
@@ -147,12 +147,12 @@ class NewsTile extends StatelessWidget {
                   SizedBox(
                     width: 4,
                   ),
-                  Image.network(
+                  imgUrl!=null?Image.network(
                     imgUrl,
                     height: 90,
-                    width: 145,
+                    width: 125,
                     fit: BoxFit.cover,
-                  )
+                  ):Image.asset("assets/images/errorimg.jpg")
                 ],
               ),
             ),

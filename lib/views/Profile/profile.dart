@@ -1,3 +1,5 @@
+import '../Category/create_category.dart';
+
 import 'Profile_Component/feedbacks.dart';
 import 'package:do_an_cuoi_ki/views/Profile/Profile_Component/setting.dart';
 import 'package:flutter/cupertino.dart';
@@ -131,7 +133,17 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           icon: Icons.settings,
                           textColor: Colors.red,
                           endIcon: false,
-                        )
+                        ),
+                        ProfileMenuWidget(
+                          onPress: () => {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => CreateCategories()))
+                          },
+                          title: "Create category",
+                          icon: Icons.create,
+                          textColor: Colors.red,
+                          endIcon: false,
+                        ),
                       ],
                     ),
                     const Divider(color: Colors.grey),
