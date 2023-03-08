@@ -50,10 +50,18 @@ class _HomePageState extends State<HomePage> {
     print("current category: ${category}");
   }
 
-  void getCategory() async{
+   void getCategory() async{
     CategoryService categoryService = CategoryService();
     await categoryService.getCategories();
     categoryList = categoryService.categories;
+  }
+
+  void onTap(int index){
+  setState((){
+  category = categoryList[index].categorieSlug ?? "";
+  activeTab = index;
+  });
+  getCategorieNews();
   }
 
   //Init
@@ -70,7 +78,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: TopAppBar(),
+        appBar: CustomAppBar(),
         body: SafeArea(
           child: _loading
               ? Center(
@@ -87,11 +95,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   //App bar
-  PreferredSizeWidget TopAppBar() {
+  PreferredSizeWidget CustomAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
       title: Container(
-        height: 40,
+        height: 35,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7.0), color: Colors.white),
         child: TextField(
@@ -103,25 +111,27 @@ class _HomePageState extends State<HomePage> {
               prefixIcon: Icon(
                 Icons.search,
                 color: Color(0xffe0e0e0),
-                size: 30,
+                size: 20,
               ),
               hintText: 'Nhập từ khóa',
-              hintStyle: TextStyle(color: Color(0xffe0e0e0), fontSize: 18),
+              hintStyle: TextStyle(color: Color(0xffe0e0e0), fontSize: 15),
               suffixIcon: Icon(Icons.area_chart, color: Color(0xffd43c3b))),
           textAlignVertical: TextAlignVertical.center,
-          style: TextStyle(color: Colors.black87, fontSize: 18),
+          style: TextStyle(color: Colors.black87, fontSize: 16),
         ),
       ),
       bottom: AppBar(
+        toolbarHeight: 40,
         elevation: 0.0,
         bottomOpacity: 0.0,
         title: SingleChildScrollView(
             child: Container(
-                child: Row(children: <Widget>[
+                child: Row(
+                    children: <Widget>[
                   /// Categories
                   Container(
                     height: 30,
-                    width: 330,
+                    width: 355,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: categoryList.length,
@@ -141,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                                       children: [
                                         Text(
                                           '${categoryList[index].categorieName}',
-                                          style: TextStyle(fontSize: 16, color: activeTab==index?Color(0xffd43c3b):Colors.black),
+                                          style: TextStyle(fontSize: 14, color: activeTab==index?Color(0xffd43c3b):Colors.black),
                                         ),
                                         SizedBox(height: 3),
                                         activeTab==index?Container(
@@ -155,13 +165,13 @@ class _HomePageState extends State<HomePage> {
                         }),
                   ),
                   Container(
-                    width: 30,
+                    width: 15,
                     child: IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => RightNavigationBar(category: categoryList, activeTab: activeTab,)));
                     },
                       icon: Icon(
                         Icons.menu,
-                        size: 25,
+                        size: 17,
                         color: Colors.black,
                       ),),
                   ),
@@ -169,6 +179,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
       ),
       backgroundColor: Color(0xffd43c3b),
+      elevation: 0.0,
     );
   }
 }

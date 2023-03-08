@@ -114,7 +114,7 @@ class NewsTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                      width: 200,
+                      width: 230,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +125,7 @@ class NewsTile extends StatelessWidget {
                                 title,
                                 maxLines: 3,
                                 style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w900),
+                                    fontSize: 16, fontWeight: FontWeight.w900),
                               ),
                             ],
                           ),
@@ -150,7 +150,7 @@ class NewsTile extends StatelessWidget {
                   imgUrl!=null?Image.network(
                     imgUrl,
                     height: 90,
-                    width: 125,
+                    width: 140,
                     fit: BoxFit.cover,
                   ):Image.asset("assets/images/errorimg.jpg")
                 ],

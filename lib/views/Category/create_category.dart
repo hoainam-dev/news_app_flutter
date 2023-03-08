@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:do_an_cuoi_ki/views/Home/homepage.dart';
 import 'package:flutter/material.dart';
 
 class CreateCategories extends StatefulWidget {
@@ -12,6 +13,8 @@ class _CreateCategoryState extends State<CreateCategories> {
   // text fields' controllers
   final TextEditingController _categorieSlug = TextEditingController();
   final TextEditingController _categorieName = TextEditingController();
+
+  TextEditingController searchController = new TextEditingController();
 
   final CollectionReference _category =
   FirebaseFirestore.instance.collection('category');
@@ -58,6 +61,7 @@ class _CreateCategoryState extends State<CreateCategories> {
                 ElevatedButton(
                   child: Text(action == 'create' ? 'Create' : 'Update'),
                   onPressed: () async {
+                    HomePage homepage = HomePage();
                     final String? slug = _categorieSlug.text;
                     final String? name = _categorieName.text;
                     if (slug != null && name != null) {
@@ -84,8 +88,33 @@ class _CreateCategoryState extends State<CreateCategories> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create New Category'),
+      title: Container(
+      height: 40,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7.0), color: Colors.white),
+      child: TextField(
+        controller: searchController,
+        onTap: () {},
+        decoration: InputDecoration(
+            enabledBorder: InputBorder.none,
+            border: InputBorder.none,
+            prefixIcon: Icon(
+              Icons.search,
+              color: Color(0xffe0e0e0),
+              size: 30,
+            ),
+            hintText: 'Nhập từ khóa',
+            hintStyle: TextStyle(color: Color(0xffe0e0e0), fontSize: 18),
+            suffixIcon: Icon(Icons.area_chart, color: Color(0xffd43c3b))),
+        textAlignVertical: TextAlignVertical.center,
+        style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18),
       ),
+    ),
+    backgroundColor: Color(0xffd43c3b),
+    ),
       // Using StreamBuilder to display all products from Firestore in real-time
       body: StreamBuilder(
         stream: _category.snapshots(),

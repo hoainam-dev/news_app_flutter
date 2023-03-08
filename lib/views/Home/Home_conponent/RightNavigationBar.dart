@@ -74,25 +74,28 @@ class _RightNavigationBarState extends State<RightNavigationBar> {
                   Container(
                     margin: EdgeInsets.only(top: 16),
                     width: MediaQuery.of(context).size.width,
-                    height: 170,
+                    height: 150,
                     child: GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 120,
-                                childAspectRatio: 3,
+                                maxCrossAxisExtent: 115,
+                                childAspectRatio:2.6,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
                         itemCount: widget.category.length,
                         itemBuilder: (BuildContext ctx, index) {
                           return ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                              },
                               style: TextButton.styleFrom(
                                 backgroundColor: Color(0xfff1f1f1),
                                 primary: index==0?Color(0xff7e7e7e):Colors.black,
+                                elevation: 0.0,
+                                shadowColor: Colors.transparent,
                               ),
                               child: Text(
                                 "${widget.category[index].categorieName}",
-                                style: TextStyle(fontSize: 13, color: widget.activeTab==index?Color(0xffd43c3b):null),
+                                style: TextStyle(fontSize: 10.5, color: widget.activeTab==index?Color(0xffd43c3b):null),
                               ));
                         }),
                   ),
